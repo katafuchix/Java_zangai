@@ -1,0 +1,1076 @@
+    /*
+ * ConsumerMailSender.java
+ *
+ * Created on 2002/06/18, 15:42
+ */
+
+package jp.co.lastminute.common;
+
+import java.io.*;
+import java.util.*;
+import java.sql.*;
+import javax.naming.*;
+import javax.sql.*;
+import jp.co.lastminute.basket.ModelHundler;
+import jp.co.lastminute.basket.model.Order;
+import jp.co.lastminute.basket.model.Sub_Order;
+import jp.co.lastminute.basket.model.Product_Send;
+import jp.co.yobrain.util.*;
+import jp.co.lastminute.user.*;
+import jp.co.lastminute.user.model.*;
+///////////////////////////////////////
+import jp.co.lastminute.supply.Agent;
+import jp.co.lastminute.supply.jdbc.*;
+//////////////////////////////////////
+/**
+ *
+ * @author  skondo
+ * @version
+ */
+public class ConsumerMailSender implements Serializable{
+    //private String lmjmailaddress_ ;
+    //private String lmj_bcc;
+    //private String lmj_sup_bcc;
+    //private String lmj_usr_bcc;
+    //private static ResourceBundle resources;
+
+    //パラメータ
+    private String header_ = "";
+    private String cc_ = "";
+    private String title_ = "";
+    private String body_ = "";
+    private String footer_ = "";
+    private String user_ = "";
+    private ModelHundler orders = null;
+    private String order_ = "";
+    private String productsend_ = "";
+    private String email = "";
+    ///
+    private String bcc_bcc_ = "";
+    ////
+    private int sum_ = 0;
+    private int tax_ = 0;
+    private int total_ = 0;
+    public static final String lins  = "------------------------------------------------------------\n"; //(60)
+
+
+            String lmjmailaddress_="customer@lastminute.co.jp";
+            String lmj_sup_bcc="supply@lastminute.co.jp";
+            String lmj_usr_bcc="customer@lastminute.co.jp";
+            String lmj_bcc="copy@lastminute.co.jp";
+/**    static {
+        //try {
+        //    resources   = ResourceBundle.getBundle("jp.co.lastminute.common.resources.Mail", Locale.getDefault());
+            lmjmailaddress_    = resources.getString("lmjmailaddress_");
+            lmj_bcc = resources.getString("lmj_bcc_");
+            lmj_sup_bcc = resources.getString("lmj_sup_bcc");;
+            lmj_sup_bcc = resources.getString("lmj_usr_bcc");;
+        }catch (MissingResourceException mre){
+            resources = null;
+            //lmjmailaddress_ =
+            //lmj_bcc =
+            //lmj_sup_bcc =
+            //lmj_sup_bcc =
+
+        }
+    }
+ *
+ */
+    /** Creates new ConsumerMailSender */
+    public ConsumerMailSender() {
+    }
+    /**
+     * messageを送信する
+     */
+    synchronized public void sendMessage( String header, String title, ModelHundler orders, String footer){
+        this.setHeader( header );
+        this.setTitle( title );
+        this.setOrders( orders );
+        this.setFooter( footer );
+        this.sendEmailToUser();
+    }
+
+    public static final String[] usr_title_ = {"【ラストミニット・ドット・コム】ご注文・ご予約確認", "キャンセルされました", "オーダー"};
+    public static final String[] sup_title_ = {"【ラストミニット・ドット・コム】手配依頼メール", "キャンセルされました", "オーダー"};
+    public static final String[] sup_header_ = { "いつも大変お世話になっております。\n下記の商品ご注文頂きましたのでご案内申し上げます。\n\n宜しくお願い申し上げます。\n\n株式会社ラストミニット・ドット・コム\n03-3526-6221\nsupply@lastminute.co.jp\n",
+                                               "SEE YOU NEXT TIME\n",
+                                               "いつも大変お世話になっております。\n下記の商品ご注文頂きましたのでご案内申し上げます。\n\n宜しくお願い申し上げます。\n\n株式会社ラストミニット・ドット・コム\n03-3526-6221\nsupply@lastminute.co.jp\n"};
+    public static final String[] mail_header_ = { "この度は、ラストミニット・ドット・コムをご利用頂きまして、\n有難うございます。\n\n",
+                                               "SEE YOU NEXT TIME\n",
+                                               "この度は、ラストミニット・ドット・コムをご利用頂きまして、\n有難うございます。"};
+    public static final String lmj_footer_ = "------------------------------------------------------------\n"
+                                               + "do something lastminute.com\n"
+                                               + "http://www.lastminute.co.jp\n";
+    private static final String takuhai = "お客様への商品のお届けは、弊社提携サプライヤーより直接発送\nさせていただきます。\nまた、ご注文内容の確認のため、弊社もしくは提携サプライヤーより、\nご連絡する事もございますので予めご了承下さい。\n\n一部の地域、宅配業者の配送ルート等の都合によって、ご指定の\nお時間のお届けが遅れる場合がございますので予めご了承下さい。\n";
+    private static String lmj__header ="\n------------------------------------------------------------\n"
+                        + "下記、問合せ番号はラストミニット社の問合せ番号です\n"
+                        +"------------------------------------------------------------\n";
+    /////1 ---------
+    synchronized public void sendMessagebyInt( int status1, int status2 , ModelHundler orders, String footer, DataSource dss ){
+        Vector vc = orders.getSubOrders();
+        String footer_ = "";
+        this.makeProductSend( orders.getProduct_send() );
+        int prodtypecd = 0;
+        this.totalinit();
+        for( int i=0; i<vc.size(); i++  ){
+            Sub_Order sub = (Sub_Order)vc.elementAt( i );
+            if( sub.getStatus() == 2){
+                Agent agent = this.getAgent( sub, dss );
+                footer_ = agent.getMAILCOMMENT() + "\n";
+                prodtypecd = sub.getPRODUCT_TYPE_CD();
+                if( prodtypecd < 10 ){
+                this.sendMessage(agent.getE_MAIL(),
+                                  i,
+                                  sup_header_[status1] + lmj__header,
+                                  usr_title_[status1] ,
+                                  orders,
+                                  lmj_footer_, lmj_sup_bcc);
+                }else{
+                this.sendMessage(agent.getE_MAIL(),
+                                  i,
+                                  sup_header_[status1] + takuhai + lmj__header,
+                                  usr_title_[status1] ,
+                                  orders,
+                                  getTotalString( prodtypecd ) + lmj_footer_, lmj_sup_bcc);
+                }
+                //System.err.println( "--------------------------------" + i + "-------------------------------------------------");
+            }
+            this.bodyinit();
+        }
+        //System.err.println( "-------------------------------LAST-------------------------------------------------");
+        this.totalinit();
+        this.email = orders.getProduct_send().getE_MAIL();
+        this.setHeader(mail_header_[status1] );
+        this.setTitle( usr_title_[status1] );
+        this.setOrders( orders );
+        this.setFooter( footer_ );
+        this.sendEmailToUser( orders.getProduct_send().getE_MAIL(), prodtypecd );
+    }
+    /////// 2------
+    synchronized public void sendMessagebyInt( int status1, int status2 , ModelHundler orders, String footer, DataSource dss, String desc, String names){
+        Vector vc = orders.getSubOrders();
+        String footer_ = "";
+        Product_Send prs = orders.getProduct_send();
+        this.makeProductSend( orders.getProduct_send() );
+        int prodtypecd = 0;
+        String email_ = orders.getProduct_send().getE_MAIL();
+        for( int i=0; i<vc.size(); i++  ){
+            Sub_Order sub = (Sub_Order)vc.elementAt( i );
+            if( sub.getStatus() == 2){
+                Agent agent = this.getAgent( sub, dss );
+                footer_ = agent.getMAILCOMMENT() + "\n";
+                this.sendMessage(agent.getE_MAIL(),             //エージェント用
+                                  i,
+                                  sup_header_[status1],
+                                  sup_title_[status1],
+                                  orders,
+                                  desc + "\n" + lmj_footer_,
+                                  lmj_sup_bcc);
+                this.email = email_;
+                this.bodyinit();
+                prodtypecd = sub.getPRODUCT_TYPE_CD();
+                if( prodtypecd < 10 ){
+                this.sendMessage( this.email ,                  //ユーザー用
+                                   i,
+                                   names +"\n"+ mail_header_[status1] + lmj__header,
+                                   usr_title_[status1] ,
+                                   orders,
+                                   desc + "\n" + footer_ + lmj_footer_,
+                                   lmj_usr_bcc);
+                }else{
+                this.sendMessage( this.email ,                  //ユーザー用
+                                   i,
+                                   names +"\n"+ mail_header_[status1] + takuhai + lmj__header,
+                                   usr_title_[status1] ,
+                                   orders,
+                                   desc + "\n" + getTotalString( prodtypecd ) + "------------------------------------------------------------\n" + footer_ + lmj_footer_,
+                                   lmj_usr_bcc);
+                }
+                //System.err.println( "--------------------------------" + i + "-------------------------------------------------");
+            }
+            this.bodyinit();
+        }
+        //System.err.println( "-------------------------------LAST-------------------------------------------------");
+        this.bodyinit();
+        this.totalinit();
+        this.email = lmjmailaddress_;
+        this.setHeader(mail_header_[status1] );
+        this.setTitle( usr_title_[status1] );
+        this.setOrders( orders );
+        //this.setFooter( desc + "\n" );
+        this.sendEmailToUser( lmj_bcc, prodtypecd );
+    }
+    ////3-----
+    synchronized public void sendMessagebyInt( int status1, int status2 , ModelHundler orders, String footer, DataSource dss, Vector agent_messsage , String names){
+        Vector vc = orders.getSubOrders();
+        String footer_ = "";
+        this.makeProductSend( orders.getProduct_send() );
+        String email_ = orders.getProduct_send().getE_MAIL();
+        int prodtypecd = 0;
+        this.totalinit();
+        for( int i=0; i<vc.size(); i++  ){
+            String agt_mes = "";
+            if( ((String)agent_messsage.elementAt( i )).length() > 0){
+                agt_mes = "-------コメント----------------------------------------------"+ "\n"+  (String)agent_messsage.elementAt( i ) + "\n"
+                        + "------------------------------------------------------------\n";
+            }else{
+                agt_mes = "-------コメント----------------------------------------------"+ "\n\n"
+                        + "------------------------------------------------------------\n";
+            }
+            Sub_Order sub = (Sub_Order)vc.elementAt( i );
+            if( sub.getStatus() == 2){
+                Agent agent = this.getAgent( sub, dss );
+                footer_ = agent.getMAILCOMMENT() + "\n";
+                this.sendMessage(agent.getE_MAIL(),             //エージェント確認用
+                                  i,
+                                  sup_header_[status1],
+                                  sup_title_[status1],
+                                  orders, agt_mes + "\n" + lmj_footer_,
+                                  lmj_sup_bcc);
+                this.bodyinit();
+                this.email = email_;
+                prodtypecd = sub.getPRODUCT_TYPE_CD();
+                if( prodtypecd < 10 ){
+                this.sendMessage( this.email ,                  //ユーザー用
+                                    i,
+                                    names +"\n" +  mail_header_[status1]  + lmj__header,
+                                    usr_title_[status1],
+                                    orders,
+                                    agt_mes + "\n" + footer_ + lmj_footer_,
+                                    lmj_usr_bcc);
+                }else{
+                this.sendMessage( this.email ,                  //ユーザー用
+                                    i,
+                                    names +"\n" +  mail_header_[status1] + takuhai + lmj__header,
+                                    usr_title_[status1],
+                                    orders,
+                                    getTotalString( prodtypecd ) + "------------------------------------------------------------\n" + agt_mes + "\n" + footer_ + lmj_footer_,
+                                    lmj_usr_bcc);
+                }
+                //System.err.println( "--------------------------------" + i + "-------------------------------------------------");
+            }
+            this.bodyinit();
+        }
+        //System.err.println( "-------------------------------LAST-------------------------------------------------");
+        this.bodyinit();
+        this.totalinit();
+        this.email = lmjmailaddress_;
+        this.setHeader(mail_header_[status1] );
+        this.setTitle( usr_title_[status1] );
+        this.setOrders( orders );
+        //this.setFooter( desc + "\n" );
+        this.sendEmailToUser( lmj_bcc, prodtypecd );
+    }
+    synchronized public void sendMessage( String header, String title, ModelHundler orders, String footer, DataSource dss ){
+        Vector vc = orders.getSubOrders();
+        for( int i=0; i<vc.size(); i++  ){
+            Sub_Order sub = (Sub_Order)vc.elementAt( i );
+            if( sub.getStatus() == 2){
+                Agent agent = this.getAgent( sub, dss );
+                this.sendMessage(agent.getE_MAIL(), i, header, title, orders, footer);
+                this.bodyinit();
+                //System.err.println( "--------------------------------" + i + "-------------------------------------------------");
+            }
+        }
+        //System.err.println( "-------------------------------LAST-------------------------------------------------");
+        this.totalinit();
+        this.setHeader( header );
+        this.setTitle( title );
+        this.setOrders( orders );
+        this.setFooter( footer );
+        this.sendEmailToUser();
+    }
+    synchronized private void totalinit(){
+        this.sum_ = 0;
+        this.tax_ = 0;
+        this.total_ = 0;
+    }
+    synchronized private void bodyinit(){
+        this.body_ = "";
+    }
+    synchronized public void sendMessage( String cc, int idx, String header, String title, ModelHundler orders, String footer){
+        this.setCC( cc );
+        this.setHeader( header );
+        this.setTitle( title );
+        this.setOrders( orders, idx);
+        this.setFooter( footer );
+        this.sendEmailToSup();
+    }
+    //使用中
+    synchronized public void sendMessage( String cc, int idx, String header, String title, ModelHundler orders, String footer, String lmjbcc_){
+        this.bcc_bcc_ = "";
+        this.setCC( cc );
+        this.setHeader( header );
+        this.setTitle( title );
+        this.setOrders( orders, idx);
+        this.setFooter( footer );
+        this.sendEmailToSup(  lmjbcc_ , cc );
+    }
+    synchronized public void sendMessage( String cc, int idx, String header, String title, ModelHundler orders, String total, String footer, String lmjbcc_){
+        this.bcc_bcc_ = "";
+        this.setCC( cc );
+        this.setHeader( header );
+        this.setTitle( title );
+        this.setOrders( orders, idx);
+        this.setFooter( footer );
+        this.sendEmailToSup(  lmjbcc_ , cc , total);
+    }
+    synchronized private Agent getAgent(Sub_Order suborder , DataSource dss){
+        dbAdapterAgent db =  new dbAdapterAgent( dss );
+        String agt_cd = suborder.getAGT_CD();
+        Agent agent = null;
+        if( !agt_cd.equals("LMJ") ){
+            agent = db.findAgent( agt_cd );
+        }else{
+            agent = db.findAgent( suborder.getPROD_CD() );
+        }
+        return agent;
+    }
+    /**
+     * 送信する。
+     */
+    synchronized public void sendEmailToUser(){
+        MailSender mail = new MailSender();             System.err.println( "--------------USER E_AMAIL STRAT -------");
+        /**System.err.println( "E_MAIL:" + this.email + "\n"
+                           + "LMJMAILADDRESS:" + this.lmjmailaddress_ + "\n"
+                           + "TITLE:" + this.title_ + "\n"
+                           + "HEADER:" + this.header_ + "\n"
+                           + "BODY:" + this.body_ + "\n"
+                           + "PRODUCT_SEND:" + this.productsend_ + "\n"
+                           + "FOOTER:" + this.footer_ );*/
+        if(mail.SendMail( this.email,
+                           this.lmjmailaddress_,
+                           this.title_,
+                           this.header_+ "\n" +this.body_ + "\n" + this.productsend_ + "\n" + this.footer_  )){
+        }else{
+            try{
+            System.err.println(  this.header_+ "\n" + this.body_ + "\n" + this.getTotalString() + "\n"+ this.productsend_ + "\n" + this.footer_  );
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+    synchronized public void sendEmailToUser( String eml, int prodtycd ){
+        MailSender mail = new MailSender();             System.err.println( "--------------USER E_AMAIL STRAT -------");
+        /**System.err.println( "E_MAIL:" + eml + "\n"
+                           + "LMJMAILADDRESS:" + this.lmjmailaddress_ + "\n"
+                           + "TITLE:" + this.title_ + "\n"
+                           + "HEADER:" + this.header_ + "\n"
+                           + "BODY:" + this.body_ + "\n"
+                           + "PRODUCT_SEND:" + this.productsend_ + "\n"
+                           + "FOOTER:" + this.footer_ );
+        System.err.println("------------send_emaill_touser--------");
+        System.err.println("to");
+        System.err.println("------------send_emaill_touser--------");*/
+        if(mail.SendMail( eml,
+                           this.lmjmailaddress_,
+                           this.title_,
+                           this.header_+ "\n" +this.body_ + "\n" + this.getTotalString( prodtycd )  + "\n" + this.productsend_ + "\n" + this.footer_  )){
+        }else{
+            try{
+            System.err.println(  this.header_+ "\n" + this.body_ + "\n" + this.productsend_ + "\n" + this.footer_  );
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+    synchronized public void sendEmailToUser( String eml, String from, int prodtycd ){
+        MailSender mail = new MailSender();             System.err.println( "--------------USER E_AMAIL STRAT -------");
+        /*:System.err.println( "E_MAIL:" + eml + "\n"
+                           + "LMJMAILADDRESS:" + this.lmjmailaddress_ + "\n"
+                           + "TITLE:" + this.title_ + "\n"
+                           + "HEADER:" + this.header_ + "\n"
+                           + "BODY:" + this.body_ + "\n"
+                           + "PRODUCT_SEND:" + this.productsend_ + "\n"
+                           + "FOOTER:" + this.footer_ );
+        System.err.println("------------send_emaill_touser--------");
+        System.err.println("to");
+        System.err.println("------------send_emaill_touser--------");*/
+        if(mail.SendMail( eml,
+                           from,
+                           this.title_,
+                           this.header_+ "\n" +this.body_ + "\n" + this.getTotalString( prodtycd )  + "\n" + this.productsend_ + "\n" + this.footer_  )){
+        }else{
+            try{
+            System.err.println(  this.header_+ "\n" + this.body_ + "\n" + this.productsend_ + "\n" + this.footer_  );
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+    }
+    synchronized public void sendEmailToSup(){
+        MailSender mail = new MailSender();
+        /**System.err.println( "E_MAIL:" + this.email + "\n"
+                           + "LMJMAILADDRESS:" + this.lmjmailaddress_ + "\n"
+                           + "TITLE:" + this.title_ + "\n"
+                           + "HEADER:" + this.header_ + "\n"
+                           + "BODY:" + this.body_ + "\n"
+                           + "PRODUCT_SEND:" + this.productsend_ + "\n"
+                           + "FOOTER:" + this.footer_ );*/
+        if(mail.SendMail( this.cc_,
+                           this.lmjmailaddress_,
+                           "",
+                           this.lmj_bcc,
+                           this.title_,
+                           this.header_+ "\n" +this.body_ + "\n" + this.productsend_ + "\n" + this.footer_  )){
+        }else{
+            try{
+            System.err.println(  this.header_+ "\n" + this.body_ + "\n" + this.productsend_ + "\n" + this.footer_  );
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        mail = null;
+    }
+    synchronized public void sendEmailToSup(String sup_bc, String cc){
+        MailSender mail = new MailSender();
+        /**System.err.println( "E_MAIL:" + cc + "\n"
+                           + "LMJMAILADDRESS:" + sup_bc + "\n"
+                           + "TITLE:" + this.title_ + "\n"
+                           + "HEADER:" + this.header_ + "\n"
+                           + "BODY:" + this.body_ + "\n"
+                           + "PRODUCT_SEND:" + this.productsend_ + "\n"
+                           + "FOOTER:" + this.footer_ );*/
+        if(mail.SendMail( cc ,
+                           sup_bc,
+                           "",
+                           this.lmj_bcc,
+                           this.title_,
+                           this.header_ +this.body_ + "\n" + this.productsend_ + "\n" + this.footer_  )){
+        }else{
+            try{
+            System.err.println(  this.header_+ "\n" + this.body_ + "\n" + this.productsend_ + "\n" + this.footer_  );
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        mail = null;
+    }
+    synchronized public void sendEmailToSup(String sup_bc, String cc, String total){
+        MailSender mail = new MailSender();
+        /**System.err.println( "E_MAIL:" + cc + "\n"
+                           + "LMJMAILADDRESS:" + sup_bc + "\n"
+                           + "TITLE:" + this.title_ + "\n"
+                           + "HEADER:" + this.header_ + "\n"
+                           + "BODY:" + this.body_ + "\n"
+                           + "PRODUCT_SEND:" + this.productsend_ + "\n"
+                           + "FOOTER:" + this.footer_ );*/
+        if(mail.SendMail( cc ,
+                           sup_bc,
+                           "",
+                           this.lmj_bcc,
+                           this.title_,
+                           this.header_ +this.body_ + "\n" + total + "\n"+ this.productsend_ + "\n" + this.footer_  )){
+        }else{
+            try{
+            System.err.println(  this.header_+ "\n" + this.body_ + "\n" + this.productsend_ + "\n" + this.footer_  );
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        mail = null;
+    }
+    /**
+     * CC
+     */
+    public void setCC( String cc ){
+        this.cc_ = cc;
+    }
+    /**
+     * ヘッダー
+     */
+    public void setHeader( String header ){
+        this.header_ = header;
+    }
+    /**
+     * タイトル
+     */
+    public void setTitle( String title ){
+        this.title_ = title;
+    }
+    /**
+     * ボディ
+     */
+    public void setBody( String body ){
+        this.body_ += body;
+    }
+    /**
+     * フッター
+     */
+    public void setFooter( String footer ){
+        this.footer_ = footer;
+    }
+    /**
+     * フッター
+     */
+    synchronized public void setOrder( String order ){
+        this.order_ = order;
+    }
+    /**
+     * 送り先の取得
+     */
+    synchronized public void setClinetEMail(String email){
+        this.email = email;
+    }
+    /**
+     * 配送先の保持
+     */
+    synchronized public void setProductsend( String productsend ){
+        this.productsend_ = productsend;
+    }
+    /**
+     * 配送先の作成
+     */
+    synchronized public void makeProductSend( Product_Send productsend ){
+        jp.co.lastminute.common.jdbc.CommonCityCarrier stateArray = new jp.co.lastminute.common.jdbc.CommonCityCarrier();
+        String postal1 = "";
+        String postal2 = "";
+        String statename1 = "";
+        String statename2 = "";
+        try{
+            postal1 = productsend.getMain_postalcode().substring(0,3) + "-" + productsend.getMain_postalcode().substring(3);
+        }catch(Exception ex){}
+        try{
+            postal2 = productsend.getPOSTAL_CD().substring(0,3) + "-"+  productsend.getPOSTAL_CD().substring(3);
+        }catch(Exception ex){}
+        try{
+            statename1 = stateArray.getStateName(  Integer.parseInt( productsend.getMain_state()) );
+        }catch(Exception ex){}
+        try{
+            statename2 = stateArray.getStateName( productsend.getSTATE_CD() );
+        }catch(Exception ex){}
+                     //  "---LastMinuteMemberInformation-------------------------------\n"
+        String restr = "---お届け先--------------------------------------------------\n"
+                    + "お名前\t;" + productsend.getFIRST_NAME() + "　" + productsend.getLASTNAME() + "\n"
+                     + "ご住所\t:" + postal2 + "\t"+ statename2 + " " + productsend.getCITY_NAME() +  "　" + productsend.getADDRESS() + "　" + productsend.getBuildaddress() + "\n"
+                     + "電話番号\t:" + productsend.getTEL_NO() + "\n"
+                     + "FAX番号\t:" + productsend.getFAX()  + "\n"
+                     + "E MAIL\t:" + productsend.getE_MAIL() + "\n"
+                     //+ "受け取り\t:" + productsend.getDELIVERYNAME() + "\n"
+                     + lins;
+        if(  productsend.getADDRESSFLG() ==  2){
+             restr += "目的\t:ご自宅用\n";
+        }else{
+             restr += "目的\t:ギフト\n";
+        }
+        restr += lins;
+        //this.setClinetEMail(productsend.getE_MAIL()) ;
+        this.setProductsend( restr );
+    }
+    /**
+    synchronized public void makeProductSend( Product_Send productsend ){
+                     //  "---LastMinuteMemberInformation-------------------------------\n"
+        String restr = "---お届け先--------------------------------------------------\n"
+                     + "お名前\t;" + productsend.getLASTNAME() + "　" + productsend.getFIRST_NAME() + "\n"
+                     + "ご住所\t:" + productsend.getCITY_NAME() +  "　" + productsend.getADDRESS() + "\n"
+                     + "電話番号\t:" + productsend.getTEL_NO() + "\n"
+                     + "FAX番号\t:" + productsend.getFAX()  + "\n"
+                     + "携帯電話\t:" + productsend.getMOBILE_E_MAIL() + "\n"
+                     + "E MAIL\t:" + productsend.getE_MAIL() + "\n"
+                     + "受け取り\t:" + productsend.getDELIVERYNAME() + "\n"
+                     + lins;
+        if(  productsend.getADDRESSFLG() ==  2){
+             restr += "目的\t:ご自宅用\n";
+        }else{
+             restr += "目的\t:ギフト\n";
+        }
+        restr += lins;
+        //this.setClinetEMail(productsend.getE_MAIL()) ;
+        this.setProductsend( restr );
+    }
+     **/
+    synchronized public void makeProductSend( Product_Send productsend , Profile profile){
+        jp.co.lastminute.common.jdbc.CommonCityCarrier stateArray = new jp.co.lastminute.common.jdbc.CommonCityCarrier();
+        String postal1 = "";
+        String postal2 = "";
+        String statename1 = "";
+        String statename2 = "";
+        try{
+            postal1 = productsend.getMain_postalcode().substring(0,3) + "-" + productsend.getMain_postalcode().substring(3);
+        }catch(Exception ex){}
+        try{
+            postal2 = productsend.getPOSTAL_CD().substring(0,3) + "-"+  productsend.getPOSTAL_CD().substring(3);
+        }catch(Exception ex){}
+        try{
+            statename1 = stateArray.getStateName(  Integer.parseInt( productsend.getMain_state()) );
+        }catch(Exception ex){}
+        try{
+            statename2 = stateArray.getStateName( productsend.getSTATE_CD() );
+        }catch(Exception ex){}
+       String restr  = " ---会員情報--------------------------------------------------\n"
+                     + "お名前\t:" + productsend.getMain_lastname_kanji() + " " +  productsend.getMain_firstname_kanji() + "\n"
+                     + "ご住所\t:" + postal1 + "\t" + statename1 + " " + productsend.getMain_address() + " " + productsend.getBuildaddress()  + "\n"
+                     + "電話番号\t:"+ productsend.getMOBILE_E_MAIL() + "\n"
+                     + "E-MAIL\t:" +  productsend.getE_MAIL() + "\n"
+                     + "---お届け先--------------------------------------------------\n"
+                     + "お名前\t;" + productsend.getFIRST_NAME() + "　" + productsend.getLASTNAME() + "\n"
+                     + "ご住所\t:" + postal2 + "\t"+ statename2 + " " + productsend.getCITY_NAME() +  "　" + productsend.getADDRESS() + "\n"
+                     + "電話番号\t:" + productsend.getTEL_NO() + "\n"
+                     + "FAX番号\t:" + productsend.getFAX()  + "\n";
+                     //+ "受け取り\t:" + productsend.getDELIVERYNAME() + "\n";
+        if(  productsend.getADDRESSFLG() ==  2){
+             restr += "目的\t:ご自宅用\n";
+        }else{
+             restr += "目的\t:ギフト\n";
+        }
+        restr += lins;
+        //this.setClinetEMail(productsend.getE_MAIL()) ;
+        this.setProductsend( restr );
+    }
+    /**
+     * オーダー追加
+     */
+    synchronized public void setOrders( ModelHundler orders){
+        this.setOrders( orders, -1);
+    }
+    synchronized public void setOrders( ModelHundler orders, int idx){
+        int price = 0;
+        this.orders = orders;
+        Order order = this.orders.getOrder();
+        String space = "------------------------------------------------------------\n"; //(60)
+        String header ="ご注文番号:[ORDER NO] " + order.getORDER_NO() + " ＊ご注文番号はラストミニット社の注文番号です\n"
+                      +"------------------------------------------------------------\n"
+                      +this.getZeroFormat( order.getORDER_NO(), 7 ) + "\n" + lins;
+        String head  = ""; //(60)
+                     //"--------10--------20--------30--------40--------50--------60";
+        Vector suborders = this.orders.getSubOrders();
+        Product_Send productsend = order.getProductSend(0);
+        String suborderline = "";
+        if( idx == -1 ){
+            for(int i=0; i<suborders.size(); i++){
+                Sub_Order suborder = (Sub_Order)suborders.elementAt(i);
+                if( suborder.getStatus() == 2 ){
+                    price = suborder.getPRICE();
+                    this.sum_ += price;
+                    if( suborder.getPRODUCT_TYPE_CD() ==4){
+                    suborderline += lins + this.getSubOrderLineYado( suborder.getSUB_ORDER_NO(),
+                                                            suborder.getTITLE(),
+                                                            suborder.getAGT_ORDER_NO(),
+                                                            price)+ "\n";
+                    }else{
+                    suborderline += lins + this.getSubOrderLine( suborder.getSUB_ORDER_NO(),
+                                                            suborder.getTITLE(),
+                                                            suborder.getAGT_ORDER_NO(),
+                                                            price, suborder.getPax(), suborder.getPrices(), suborder.getEtc(),suborder.getORDER_NO()  )+ "\n";
+
+
+                    }
+                    price = 0;
+
+                }
+            }
+        }else{
+            Sub_Order suborder = (Sub_Order)suborders.elementAt(idx);
+            if( suborder.getStatus() == 2 ){
+                price = suborder.getPRICE();
+                sum_ += price;
+                if( suborder.getPRODUCT_TYPE_CD() ==4){
+                suborderline += lins + this.getSubOrderLineYado( suborder.getSUB_ORDER_NO(),
+                                                               suborder.getTITLE(),
+                                                               suborder.getAGT_ORDER_NO(),
+                                                               price)+ "\n";
+
+                }else{
+                suborderline += lins + this.getSubOrderLine( suborder.getSUB_ORDER_NO(),
+                                                               suborder.getTITLE(),
+                                                               suborder.getAGT_ORDER_NO(),
+                                                               price, suborder.getPax(), suborder.getPrices(), suborder.getEtc() ,suborder.getORDER_NO() )+ "\n";
+                }
+            }
+        }
+        //tax = new Double( sum*0.05 ).intValue();
+        //total = sum + tax;
+        /*
+        String reStr = "";
+        reStr += header + "\n\n"
+              + head + suborderline + lins
+              + getPriceFormat( sum , "Sum") + "\n"
+              //+ getPriceFormat( tax , "Tax") + "\n"
+              +"--------------------------\n"
+              + getPriceFormat( total , "Total") + "\n";
+        */
+        this.setBody( suborderline );
+    }
+    /**
+     *
+     */
+    synchronized public String getTotalString(){
+         ParseFormat parseFormat = null;
+        return "---ご請求金額------------------------------------------------\n"
+                + "\\" + parseFormat.ToPriceFormat( this.sum_  ) + "(送料･税金込)\n"
+                + "お引落し日は、カード会社によって異なります。\n";
+    }
+    synchronized public String getTotalString(int prodcd){
+        if( prodcd > 10 ){
+            return getTotalString();
+        }
+         ParseFormat parseFormat = null;
+        return "---ご請求金額------------------------------------------------\n"
+                + "\\" + parseFormat.ToPriceFormat( this.sum_  ) + "(送料･税金込)\n";
+    }
+    /**
+     * オーダーNOの0詰め
+     */
+    public String getZeroFormat(int num, int size){
+        ParseFormat parseFormat = null;
+        return parseFormat.ZeroUP( num, size);
+    }
+    /**
+     * サブオーダーのライン取得
+     */
+    synchronized public String getSubOrderLine( int num, String title, String agtordercode, int price){
+        char ch = ' ';
+        String topline; String bellow = "";String split = "             ";
+
+                topline = "問合せ番号\t:" + num +  "\n商品名\t:" + title + "\n";
+                if( agtordercode.length() > 0 ){
+                    bellow = this.getPriceFormat( price, "価格") + "[ご予約お問合せ番号]\t" + agtordercode + "\n";
+                }else{
+                    bellow = this.getPriceFormat( price, "価格");
+                }
+        return topline + bellow;
+    }
+    synchronized public String getSubOrderLine( int num, String title, String agtordercode, int price, int pax, int prices, String Etc){
+        char ch = ' ';
+        String etcstring = "";
+        String topline; String bellow = "";String split = "             ";
+                if( Etc.length() > 0 ){ etcstring = "(" + Etc + ")";    }
+                topline = "問合せ番号\t:" + num +  "\n商品名\t:" + title + etcstring + "\n";
+                if( agtordercode.length() > 0 ){
+                    bellow = this.getPriceFormat( price, "価格") + "[ご予約お問合せ番号]\t" + agtordercode + "\n";
+                }else{
+                    bellow = this.getPriceFormat( price, "単価", pax, prices) ;
+                }
+        return topline + bellow;
+    }
+    synchronized public String getSubOrderLine( int num, String title, String agtordercode, int price, int pax, int prices, String Etc, int order_no){
+        char ch = ' ';
+        String etcstring = "";
+        String topline; String bellow = "";String split = "             ";
+                if( Etc.length() > 0 ){ etcstring = "(" + Etc + ")";    }
+                topline = "問合せ番号\t:" + order_no + "-" + num +  "\n商品名\t:" + title + etcstring + "\n";
+                if( agtordercode.length() > 0 ){
+                    bellow = this.getPriceFormat( price, "価格") + "[ご予約お問合せ番号]\t" + agtordercode + "\n";
+                }else{
+                    bellow = this.getPriceFormat( price, "単価", pax, prices) ;
+                }
+        return topline + bellow;
+    }
+    /**
+     * サブオーダーのライン取得
+     */
+    synchronized public String getSubOrderLineYado( int num, String title, String agtordercode, int price){
+        char ch = ' ';
+        return "------------------------------------------------------------\n"
+                + "[ご予約お問合せ番号]\t" + agtordercode + "\n"
+                + "------------------------------------------------------------\n";
+    }
+    /**
+     * スペースの取得
+     */
+    synchronized public String getSpace(int num , char ch){
+        StringBuffer sb = new StringBuffer();
+        for( int i=0; i<num; i++){
+            sb.append(ch);
+        }
+        return sb.toString();
+    }
+    /**
+     * プライスフォーマット
+     */
+    synchronized private String getPriceFormat( int price , String tag){
+        try{
+            String reStr = "";
+            String priceString = "";
+            ParseFormat parseFormat = null;
+            priceString = "価格\t:\\" + parseFormat.ToPriceFormat( price ) + "\n" + "数量\t:1\n"
+                        + "------------------------------------------------------------\n";
+            return priceString;
+        }catch(Exception e){}
+        return "";
+    }
+    synchronized private String getPriceFormat( int price , String tag, int pax, int prices ){
+        try{
+            String reStr = "";
+            String priceString = "";
+            ParseFormat parseFormat = null;
+            priceString = "単価\t:\\" + parseFormat.ToPriceFormat( price ) + "\n" + "数量\t:" + pax + "\n" + "小計\t:\\" + parseFormat.ToPriceFormat( prices ) + "\n"
+                        + "------------------------------------------------------------\n";
+            return priceString;
+        }catch(Exception e){}
+        return "";
+    }
+    synchronized private String getPriceFormat( String price, String tag){
+        try{
+            int intprice = Integer.parseInt( price );
+            return getPriceFormat( intprice, tag);
+        }catch(Exception ex){}
+        return "";
+    }
+    synchronized public void setUserElements( User user ){
+        User_Tbl usertbl = user.getUser();
+        Profile profile = user.getProfile();
+         //"--------10--------20--------30--------40--------50--------60";
+        this.user_ =  "---LastMinuteMemberInformation-------------------------------\n"
+                    + "お名前\t:" + profile.getSEI_KANJI() + " " + profile.getNA_KANJI() + "\n"
+                    + "E-MAIL\t:" + usertbl.getE_MAIL() + "\n";
+    }
+    synchronized public String getUserElements(){
+        return this.user_;
+    }
+
+
+    ////1--/////
+    synchronized public void sendMessagebyInt( int status1, int status2 , ModelHundler orders, String footer, DataSource dss, Profile profile ){
+        Vector vc = orders.getSubOrders();
+        String footer_ = "";
+        this.makeProductSend( orders.getProduct_send(), profile );
+        int prodtypecd = 0;
+        for( int i=0; i<vc.size(); i++  ){
+            this.totalinit();
+            Sub_Order sub = (Sub_Order)vc.elementAt( i );
+            if( sub.getStatus() == 2){
+                Agent agent = this.getAgent( sub, dss );
+                footer_ = agent.getMAILCOMMENT() + "\n";
+                prodtypecd = sub.getPRODUCT_TYPE_CD();
+                if( prodtypecd < 10 ){
+                this.sendMessage(agent.getE_MAIL(),
+                                  i,
+                                  sup_header_[status1] + lmj__header,
+                                  usr_title_[status1] ,
+                                  orders,
+                                  lmj_footer_, lmj_sup_bcc);
+                }else{
+                this.sendMessage(agent.getE_MAIL(),
+                                  i,
+                                  sup_header_[status1] + takuhai + lmj__header,
+                                  usr_title_[status1] ,
+                                  orders,
+                                  getTotalString( prodtypecd ) + lmj_footer_, lmj_sup_bcc);
+                }
+                //System.err.println( "--------------------------------" + i + "-------------------------------------------------");
+            }
+            this.bodyinit();
+        }
+        //System.err.println( "-------------------------------LAST-------------------------------------------------");
+        this.totalinit();
+        this.email = orders.getProduct_send().getE_MAIL();
+        this.setHeader(mail_header_[status1] );
+        this.setTitle( usr_title_[status1] );
+        this.setOrders( orders );
+        this.setFooter( footer_ );
+        this.sendEmailToUser( orders.getProduct_send().getE_MAIL(), prodtypecd );
+    }
+        /////// 2------
+    synchronized public void sendMessagebyInt( int status1, int status2 , ModelHundler orders, String footer, DataSource dss, String desc, String names, Profile profile){
+        Vector vc = orders.getSubOrders();
+        String footer_ = "";
+        Product_Send prs = orders.getProduct_send();
+        Sub_Order sub1 = (Sub_Order)vc.elementAt( 0 );
+        int prodtypecd = 0;
+        //this.makeProductSend( orders.getProduct_send(), profile);
+        String addheder = "";
+        if( sub1.getAGT_CD().equals("KNT")){
+            addheder = "お客様のご予約は、近畿日本ツーリストが承りました。\n"
+                     + "ご予約内容をお送りしますのでご確認ください。\n\n"
+                     + "* * *ご利用に関しては以下の点にご注意下さい。* * *\n"
+                     + "1.ご旅行出発時には、ご予約確認書を持参いただくかまたは、\n"
+                     + "  予約番号を控えるようにして下さい。\n"
+                     + "2.ご宿泊代金は、直接宿泊先にて、全額現金にてお支払い下さい。\n"
+                     + "3.ご予約の取消は、営業時間内はマルチネットセンターへ。\n"
+                    + "また営業時間外は宿泊施設へ必ずお電話でご連絡下さい。\n\n"
+                    + "それでは良いご旅行を！\n\n";
+        } else if (sub1.getAGT_CD().equals("NTA")){
+			addheder =""
+			+ "お客様のご予約は、ご予約施設が承りました。\n"
+			+ "ご予約内容をお送りしますのでご確認ください。\n"
+			+ "\n"
+			+ "* * *ご利用に関しては以下の点にご注意下さい。* * *\n"
+			+ "1.ご旅行出発時には、ご予約確認書を持参いただくかまたは、\n"
+			+ "  予約番号を控えるようにして下さい。\n"
+			+ "\n"
+			+ "2.ご宿泊代金は、直接宿泊先にて、全額現金にてお支払い下さい。\n"
+			+ "\n"
+			+ "3.ご予約の確認は、http://test.lastminute.co.jp/lmj/hotel/check_reserve.jspにて\n"
+			+ "\n"
+			+ "4.ご予約の取消は、http://test.lastminute.co.jp/lmj/hotel/cancel_reserve.jspにて\n"
+			+ "　宿泊日が当日の場合は宿泊施設へ必ずお電話でご連絡下さい。\n"
+			+ "\n"
+			+ "それでは良いご旅行を！\n\n";
+		}
+        String email_ = orders.getProduct_send().getE_MAIL();
+        for( int i=0; i<vc.size(); i++  ){
+            Sub_Order sub = (Sub_Order)vc.elementAt( i );
+            if( sub.getStatus() == 2){
+                Agent agent = this.getAgent( sub, dss );
+                footer_ = agent.getMAILCOMMENT() + "\n";
+                /**
+                this.sendMessage(agent.getE_MAIL(),             //エージェント用
+                                  i,
+                                  sup_header_[status1],
+                                  sup_title_[status1],
+                                  orders,
+                                  desc + "\n" + lmj_footer_,
+                                  lmj_sup_bcc);
+                 */
+                this.email = email_;
+                this.bodyinit();
+                prodtypecd = sub.getPRODUCT_TYPE_CD();
+                if( prodtypecd < 10 ){
+                this.sendMessage( this.email,                  //ユーザー用
+                                   i,
+                                   names +"\n"+ mail_header_[status1] + addheder,
+                                   usr_title_[status1] ,
+                                   orders,
+                                   desc + "\n" + footer_ + lmj_footer_,
+                                    lmj_usr_bcc);
+                }else{
+                this.sendMessage( this.email ,                  //ユーザー用
+                                   i,
+                                   names +"\n"+ mail_header_[status1] + takuhai + addheder,
+                                   usr_title_[status1] ,
+                                   orders,
+                                   desc + "\n" + getTotalString( prodtypecd ) + "------------------------------------------------------------\n",
+                                   footer_ + lmj_footer_,
+                                   lmj_usr_bcc );
+                }
+                //System.err.println( "--------------------------------" + i + "-------------------------------------------------");
+            }
+            this.bodyinit();
+        }
+        //System.err.println( "-------------------------------LAST-------------------------------------------------");
+        /**
+        this.bodyinit();
+        this.totalinit();
+        this.email = lmjmailaddress_;
+        this.setHeader(mail_header_[status1] + addheder );
+        this.setTitle( usr_title_[status1] );
+        this.setOrders( orders );
+        //this.setFooter( desc + "\n" );
+        this.sendEmailToUser( lmj_bcc, prodtypecd );
+         */
+    }
+        ////3-----
+    synchronized public void sendMessagebyInt( int status1, int status2 , ModelHundler orders, String footer, DataSource dss, Vector agent_messsage , String names, Profile profile){
+        Vector vc = orders.getSubOrders();
+        String footer_ = "";
+        this.makeProductSend( orders.getProduct_send(), profile );
+        String email_ = orders.getProduct_send().getE_MAIL();
+        int prodtypecd = 0;
+        this.totalinit();
+        for( int i=0; i<vc.size(); i++  ){
+            this.totalinit();
+            String agt_mes = "";
+            if( ((String)agent_messsage.elementAt( i )).length() > 0){
+                agt_mes = "-------コメント----------------------------------------------"+ "\n"+  (String)agent_messsage.elementAt( i ) + "\n"
+                        + "------------------------------------------------------------\n";
+            }else{
+                agt_mes = "-------コメント----------------------------------------------"+ "\n\n"
+                        + "------------------------------------------------------------\n";
+            }
+            Sub_Order sub = (Sub_Order)vc.elementAt( i );
+            if( sub.getStatus() == 2){
+                Agent agent = this.getAgent( sub, dss );
+                footer_ = agent.getMAILCOMMENT() + "\n";
+                this.sendMessage(agent.getE_MAIL(),             //エージェント確認用
+                                  i,
+                                  sup_header_[status1],
+                                  sup_title_[status1],
+                                  orders, agt_mes + "\n" + lmj_footer_,
+                                  lmj_sup_bcc);
+                this.bodyinit();
+                this.email = email_;
+                prodtypecd = sub.getPRODUCT_TYPE_CD();
+                if( prodtypecd < 10 ){
+                this.sendMessage( this.email ,                  //ユーザー用
+                                    i,
+                                    names +"\n" +  mail_header_[status1]  + lmj__header,
+                                    usr_title_[status1],
+                                    orders,
+                                    agt_mes + "\n" + footer_ + lmj_footer_,
+                                    lmj_usr_bcc);
+                }else{
+                this.sendMessage( this.email ,                  //ユーザー用
+                                    i,
+                                    names +"\n" +  mail_header_[status1] + takuhai + lmj__header,
+                                    usr_title_[status1],
+                                    orders,
+                                    getTotalString( prodtypecd ) + "------------------------------------------------------------\n" + agt_mes + "\n",
+                                    footer_ + lmj_footer_,
+                                    lmj_usr_bcc);
+                }
+                //System.err.println( "--------------------------------" + i + "-------------------------------------------------");
+            }
+            this.bodyinit();
+        }
+        //System.err.println( "-------------------------------LAST-------------------------------------------------");
+        /**this.bodyinit();
+        this.totalinit();
+        this.email = lmjmailaddress_;
+        this.setHeader(sup_header_[status1] );
+        this.setTitle( sup_title_[status1] );
+        this.setOrders( orders, agent_messsage );
+        //this.setFooter( desc + "\n" );
+        this.sendEmailToUser( lmj_bcc , lmj_sup_bcc, prodtypecd );
+         */
+    }
+    synchronized public void setOrders( ModelHundler orders, Vector agent_messsage){
+        int price = 0;
+        this.orders = orders;
+        Order order = this.orders.getOrder();
+        String space = "------------------------------------------------------------\n"; //(60)
+        String header ="ご注文番号:[ORDER NO] " + order.getORDER_NO() + " ＊ご注文番号はラストミニット社の注文番号です\n"
+                      +"------------------------------------------------------------\n"
+                      +this.getZeroFormat( order.getORDER_NO(), 7 ) + "\n" + lins;
+        String head  = ""; //(60)
+                     //"--------10--------20--------30--------40--------50--------60";
+        Vector suborders = this.orders.getSubOrders();
+        Product_Send productsend = order.getProductSend(0);
+        String suborderline = "";
+        this.totalinit();
+        for(int i=0; i<suborders.size(); i++){
+            Sub_Order suborder = (Sub_Order)suborders.elementAt(i);
+            String agt_mes = "";
+            try{
+                if( ((String)agent_messsage.elementAt( i )).length() > 0){
+                    agt_mes = "-------コメント----------------------------------------------"+ "\n"+  (String)agent_messsage.elementAt( i ) + "\n"
+                            + "------------------------------------------------------------\n";
+                }else{
+                    agt_mes = "-------コメント----------------------------------------------"+ "\n\n"
+                            + "------------------------------------------------------------\n";
+                }
+            }catch(Exception ex){}
+            if( suborder.getStatus() == 2 ){
+                if( suborder.getPRODUCT_TYPE_CD() > 90 ){
+                    price = suborder.getPrices();
+                    this.sum_ += price;
+                    suborderline += lins + this.getSubOrderLine( suborder.getSUB_ORDER_NO(),
+                                                                suborder.getTITLE(),
+                                                                suborder.getAGT_ORDER_NO(),
+                                                                price, suborder.getPax(), suborder.getPrices(), suborder.getEtc(), suborder.getORDER_NO() )+ "\n" + agt_mes;
+                    price = 0;
+                }else{
+                    price = suborder.getPRICE();
+                    this.sum_ += price;
+                    suborderline += lins + this.getSubOrderLine( suborder.getSUB_ORDER_NO(),
+                                                                suborder.getTITLE(),
+                                                                suborder.getAGT_ORDER_NO(),
+                                                                price)+ "\n" + agt_mes;
+                    price = 0;
+                }
+            }
+        }
+        //tax = new Double( sum*0.05 ).intValue();
+        //total = sum + tax;
+        /*
+        String reStr = "";
+        reStr += header + "\n\n"
+              + head + suborderline + lins
+              + getPriceFormat( sum , "Sum") + "\n"
+              //+ getPriceFormat( tax , "Tax") + "\n"
+              +"--------------------------\n"
+              + getPriceFormat( total , "Total") + "\n";
+        */
+        this.setBody( suborderline );
+    }
+}

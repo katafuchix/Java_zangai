@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<payment-property>
+<!--
+	データ形式：
+	<payment-one-type2>			 決済処理サービス定義ブロック
+		<term-info>					端末識別番号情報定義ブロック
+			<term-id>				Payment-One社から指定された端末識別番号
+									：提供された端末数分定義を記述します。
+
+		<number-info>				伝票番号自動採番情報定義ブロック
+			<number-file-path>		伝票番号格納ファイルパス
+									：プログラム実行時にアクセス権限のあるディレクトリへのパスを記述します。
+
+-->
+
+	<payment-one-type2>
+
+		<term-info>
+			<term-id>0000000000000</term-id>
+			<term-id>0000000000001</term-id>
+			<term-id>0000000000002</term-id>
+			<term-id>0000000000003</term-id>
+			<term-id>0000000000004</term-id>
+		</term-info>
+
+		<receipt-info>
+			<receipt-num>01001</receipt-num>
+			<receipt-num>02001</receipt-num>
+			<receipt-num>03001</receipt-num>
+			<receipt-num>04001</receipt-num>
+			<receipt-num>05001</receipt-num>
+		</receipt-info>
+
+		<number-info>
+			<number-file-path>/usr/local/jakarta-tomcat-4.0.3/webapps/lmj/WEB-INF/classes/jp/co/lastminute/card/logs</number-file-path>
+		</number-info>
+
+	</payment-one-type2>
+</payment-property>
+

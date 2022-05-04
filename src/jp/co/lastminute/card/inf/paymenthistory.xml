@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<payment-property>
+<!--
+	データ形式：
+	<payment-one-type2>						決済処理サービス定義ブロック
+		<log-info>							ファイルログ出力情報定義ブロック
+			<uplog-name>					要求電文ログを出力するパス（ファイル名含む）
+											：ファイル名.YYYY-MM-DDというファイルが生成されます
+			<downlog-term>					応答電文ログを出力するパス（ファイル名含む）
+											：ファイル名.YYYY-MM-DDというファイルが生成されます
+-->
+
+	<payment-one-type2>
+		<filelog-info>
+			<uplog-name>/usr/local/jakarta-tomcat-4.0.3/webapps/lmj/WEB-INF/classes/jp/co/lastminute/card/logs/upLog</uplog-name>
+			<downlog-name>/usr/local/jakarta-tomcat-4.0.3/webapps/lmj/WEB-INF/classes/jp/co/lastminute/card/logs/downLog</downlog-name>
+		</filelog-info>
+	</payment-one-type2>
+</payment-property>

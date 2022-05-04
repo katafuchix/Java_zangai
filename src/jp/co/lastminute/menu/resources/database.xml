@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+	<menu catid="90" title="七夕＆夏先どり特集" url="http://test.lastminute.co.jp/index.html" />
+	<menu catid="0" title="国内ホテル＆やど" url="http://test.lastminute.co.jp/lmj/hotel/top.do?act=index" />
+	<menu catid="2" title="国内パッケージツアー" url="http://test.lastminute.co.jp/jpn_tour/index.html" />
+	<menu catid="1" title="国内バスツアー" url="http://club.lastminute.co.jp/company/knt/lmj.htm" />
+	<menu catid="12" title="海外パッケージツアー" url="http://open.lastminute.co.jp/top.asp" />
+	<menu catid="10" title="海外格安航空券" url="http://test.lastminute.co.jp/flights/index_tyo.html" />
+	<menu catid="11" title="海外ホテル" url="http://lastminute.askhotel.co.jp/" />
+	<menu catid="300" title="旅行関連商品" url="http://test.lastminute.co.jp/travel/travel_top_1.html" />
+	<menu catid="91" title="レストラン" url="http://test.lastminute.co.jp/res/index.html" />
+	<menu catid="92" title="チケット" url="http://test.lastminute.co.jp/tickets/eplus_top_1.html" />
+	<menu catid="94" title="アクティビティー" url="http://test.lastminute.co.jp/act/act_cruise.html" />
+	<menu catid="93" title="LMJセレクション" url="http://test.lastminute.co.jp/lmj/gift/top.do?act=index" />
+</database>

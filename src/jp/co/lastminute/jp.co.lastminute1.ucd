@@ -1,0 +1,43 @@
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" size="201,1091" id="KOSUZUskondolastminute314" metadata="nsuml-1.4" initialized="true">
+  <children xsi:type="editmodel:ClassEditModel" location="540,162" size="176,33" id="KOSUZUskondolastminute316" runTimeClassModel="KOSUZUskondolastminute329;KOSUZUskondolastminute323;KOSUZUskondolastminute341;KOSUZUskondolastminute325;KOSUZUskondolastminute327;KOSUZUskondolastminute338;KOSUZUskondolastminute321;KOSUZUskondolastminute331;KOSUZUskondolastminute335;KOSUZUskondolastminute333">
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="132,130" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="61,146" size="195,33" id="KOSUZUskondolastminute317" runTimeClassModel="KOSUZUskondolastminute349;KOSUZUskondolastminute345;KOSUZUskondolastminute351;KOSUZUskondolastminute358;KOSUZUskondolastminute353">
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="93,76" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="63,19" size="102,33" id="KOSUZUskondolastminute318" runTimeClassModel="KOSUZUskondolastminute382;KOSUZUskondolastminute374;KOSUZUskondolastminute368;KOSUZUskondolastminute388;KOSUZUskondolastminute454;KOSUZUskondolastminute432;KOSUZUskondolastminute476;KOSUZUskondolastminute406;KOSUZUskondolastminute428;KOSUZUskondolastminute422;KOSUZUskondolastminute394;KOSUZUskondolastminute466;KOSUZUskondolastminute372;KOSUZUskondolastminute366;KOSUZUskondolastminute456;KOSUZUskondolastminute404;KOSUZUskondolastminute458;KOSUZUskondolastminute460;KOSUZUskondolastminute412;KOSUZUskondolastminute392;KOSUZUskondolastminute378;KOSUZUskondolastminute472;KOSUZUskondolastminute364;KOSUZUskondolastminute446;KOSUZUskondolastminute384;KOSUZUskondolastminute398;KOSUZUskondolastminute462;KOSUZUskondolastminute400;KOSUZUskondolastminute440;KOSUZUskondolastminute474;KOSUZUskondolastminute380;KOSUZUskondolastminute418;KOSUZUskondolastminute452;KOSUZUskondolastminute442;KOSUZUskondolastminute430;KOSUZUskondolastminute396;KOSUZUskondolastminute464;KOSUZUskondolastminute416;KOSUZUskondolastminute420;KOSUZUskondolastminute444;KOSUZUskondolastminute390;KOSUZUskondolastminute434;KOSUZUskondolastminute414;KOSUZUskondolastminute478;KOSUZUskondolastminute386;KOSUZUskondolastminute370;KOSUZUskondolastminute436;KOSUZUskondolastminute402;KOSUZUskondolastminute410;KOSUZUskondolastminute424;KOSUZUskondolastminute468;KOSUZUskondolastminute438;KOSUZUskondolastminute450;KOSUZUskondolastminute470;KOSUZUskondolastminute448;KOSUZUskondolastminute408;KOSUZUskondolastminute376;KOSUZUskondolastminute426">
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="282,6" size="173,143" id="KOSUZUskondolastminute319" runTimeClassModel="KOSUZUskondolastminute491;KOSUZUskondolastminute606;KOSUZUskondolastminute584;KOSUZUskondolastminute483;KOSUZUskondolastminute979;KOSUZUskondolastminute984;KOSUZUskondolastminute507;KOSUZUskondolastminute497;KOSUZUskondolastminute641;KOSUZUskondolastminute515;KOSUZUskondolastminute648;KOSUZUskondolastminute611;KOSUZUskondolastminute604;KOSUZUskondolastminute596;KOSUZUskondolastminute557;KOSUZUskondolastminute503;KOSUZUskondolastminute495;KOSUZUskondolastminute545;KOSUZUskondolastminute621;KOSUZUskondolastminute646;KOSUZUskondolastminute501;KOSUZUskondolastminute535;KOSUZUskondolastminute614;KOSUZUskondolastminute566;KOSUZUskondolastminute525;KOSUZUskondolastminute609;KOSUZUskondolastminute626;KOSUZUskondolastminute636;KOSUZUskondolastminute519;KOSUZUskondolastminute485;KOSUZUskondolastminute575;KOSUZUskondolastminute521;KOSUZUskondolastminute624;KOSUZUskondolastminute531;KOSUZUskondolastminute541;KOSUZUskondolastminute634;KOSUZUskondolastminute509;KOSUZUskondolastminute560;KOSUZUskondolastminute587;KOSUZUskondolastminute517;KOSUZUskondolastminute631;KOSUZUskondolastminute555;KOSUZUskondolastminute529;KOSUZUskondolastminute543;KOSUZUskondolastminute599;KOSUZUskondolastminute539;KOSUZUskondolastminute616;KOSUZUskondolastminute987;KOSUZUskondolastminute619;KOSUZUskondolastminute638;KOSUZUskondolastminute537;KOSUZUskondolastminute489;KOSUZUskondolastminute593;KOSUZUskondolastminute527;KOSUZUskondolastminute581;KOSUZUskondolastminute505;KOSUZUskondolastminute852;KOSUZUskondolastminute513;KOSUZUskondolastminute523;KOSUZUskondolastminute629;KOSUZUskondolastminute493;KOSUZUskondolastminute572;KOSUZUskondolastminute547;KOSUZUskondolastminute569;KOSUZUskondolastminute487;KOSUZUskondolastminute590;KOSUZUskondolastminute551;KOSUZUskondolastminute511;KOSUZUskondolastminute651;KOSUZUskondolastminute533;KOSUZUskondolastminute644;KOSUZUskondolastminute601;KOSUZUskondolastminute982;KOSUZUskondolastminute549;KOSUZUskondolastminute481;KOSUZUskondolastminute499;KOSUZUskondolastminute553;KOSUZUskondolastminute563;KOSUZUskondolastminute578">
+    <children xsi:type="editmodel:CompartmentEditModel" size="121,22" viewSorter="Name">
+      <children xsi:type="editmodel:AttributeEditModel" id="KOSUZUskondolastminute852"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="150,886" viewSorter="Name">
+      <children xsi:type="editmodel:MethodEditModel" id="KOSUZUskondolastminute984"/>
+      <children xsi:type="editmodel:MethodEditModel" id="KOSUZUskondolastminute982"/>
+      <children xsi:type="editmodel:MethodEditModel" id="KOSUZUskondolastminute987"/>
+      <children xsi:type="editmodel:MethodEditModel" id="KOSUZUskondolastminute979"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="KOSUZUskondolastminute727" connectionRouterKind="Manual" source="//@children.3" target="//@children.5" targetEnd="//@children.3/@sourceConnections.0/@children.1" sourceEnd="//@children.3/@sourceConnections.0/@children.0">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="75,465"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="140,116"/>
+    </sourceConnections>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" location="63,80" size="162,33" id="KOSUZUskondolastminute320" runTimeClassModel="KOSUZUskondolastminute655;KOSUZUskondolastminute661;KOSUZUskondolastminute667;KOSUZUskondolastminute671;KOSUZUskondolastminute658;KOSUZUskondolastminute664;KOSUZUskondolastminute675">
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="108,130" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="524,74" size="280,33" targetConnections="//@children.3/@sourceConnections.0" id="KOSUZUskondolastminute681" runTimeClassModel="KOSUZUskondolastminute719;KOSUZUskondolastminute695;KOSUZUskondolastminute687;KOSUZUskondolastminute703;KOSUZUskondolastminute693;KOSUZUskondolastminute698;KOSUZUskondolastminute691;KOSUZUskondolastminute684;KOSUZUskondolastminute711;KOSUZUskondolastminute700;KOSUZUskondolastminute706;KOSUZUskondolastminute715;KOSUZUskondolastminute722">
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="167,184" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+  </children>
+</editmodel:ClassDiagramEditModel>

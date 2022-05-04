@@ -1,0 +1,159 @@
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" size="848,513" id="KOSUZUskondolastminute168" metadata="nsuml-1.4" initialized="true">
+  <children xsi:type="editmodel:InterfaceEditModel" location="29,19" size="101,33" id="KOSUZUskondolastminute170" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="29,52" size="205,33" targetConnections="//@children.2/@children.1/@sourceConnections.0 //@children.7/@children.0/@sourceConnections.0" id="KOSUZUskondolastminute179" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" location="364,6" size="159,207" id="KOSUZUskondolastminute173">
+    <children xsi:type="editmodel:ClassEditModel" location="14,42" size="119,33" id="KOSUZUskondolastminute181" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="15,84" size="80,33" id="KOSUZUskondolastminute172" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="KOSUZUskondolastminute234" connectionRouterKind="Manual" source="//@children.2/@children.1" target="//@children.1" targetEnd="//@children.2/@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.2/@children.1/@sourceConnections.0/@children.0">
+        <children xsi:type="editmodel:AssociationEndEditModel" location="40,16"/>
+        <children xsi:type="editmodel:AssociationEndEditModel" location="102,16"/>
+      </sourceConnections>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="15,134" size="120,33" id="KOSUZUskondolastminute177" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" location="549,5" size="249,151" id="KOSUZUskondolastminute186">
+    <children xsi:type="editmodel:ClassEditModel" location="13,36" size="212,33" id="KOSUZUskondolastminute187" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="15,78" size="205,33" id="KOSUZUskondolastminute189" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" location="131,150" size="201,147" id="KOSUZUskondolastminute191">
+    <children xsi:type="editmodel:ClassEditModel" location="10,35" size="117,33" id="KOSUZUskondolastminute192" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="10,74" size="112,33" id="KOSUZUskondolastminute193" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" location="23,302" size="160,237" id="KOSUZUskondolastminute197">
+    <children xsi:type="editmodel:ClassEditModel" location="1,39" size="97,33" id="KOSUZUskondolastminute211" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="6,164" size="86,33" id="KOSUZUskondolastminute246" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <sourceConnections xsi:type="editmodel:DependancyEditModel" connectionRouterKind="Manual" source="//@children.5/@children.1" target="//@children.9" targetEnd="//@children.5/@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@children.1/@sourceConnections.0/@children.0">
+        <children xsi:type="editmodel:AssociationEndEditModel" location="43,16"/>
+        <children xsi:type="editmodel:AssociationEndEditModel" location="68,14"/>
+      </sourceConnections>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="38,84" size="89,33" id="KOSUZUskondolastminute251" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <sourceConnections xsi:type="editmodel:DependancyEditModel" connectionRouterKind="Manual" source="//@children.5/@children.2" target="//@children.9" targetEnd="//@children.5/@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@children.2/@sourceConnections.0/@children.0">
+        <children xsi:type="editmodel:AssociationEndEditModel" location="42,14"/>
+        <children xsi:type="editmodel:AssociationEndEditModel" location="68,14"/>
+      </sourceConnections>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="12,123" size="88,33" id="KOSUZUskondolastminute261" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" location="572,169" size="268,281" id="KOSUZUskondolastminute216">
+    <children xsi:type="editmodel:ClassEditModel" location="76,149" size="88,33" targetConnections="//@children.6/@children.2/@sourceConnections.0 //@children.6/@children.1/@sourceConnections.0" id="KOSUZUskondolastminute217" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="15,208" size="107,33" id="KOSUZUskondolastminute218" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="KOSUZUskondolastminute265" connectionRouterKind="Manual" source="//@children.6/@children.1" target="//@children.6/@children.0" targetEnd="//@children.6/@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@children.1/@sourceConnections.0/@children.0">
+        <children xsi:type="editmodel:AssociationEndEditModel" location="53,16"/>
+        <children xsi:type="editmodel:AssociationEndEditModel" location="42,14"/>
+      </sourceConnections>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="139,207" size="104,33" id="KOSUZUskondolastminute219" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="KOSUZUskondolastminute264" connectionRouterKind="Manual" source="//@children.6/@children.2" target="//@children.6/@children.0" targetEnd="//@children.6/@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@children.2/@sourceConnections.0/@children.0">
+        <children xsi:type="editmodel:AssociationEndEditModel" location="52,16"/>
+        <children xsi:type="editmodel:AssociationEndEditModel" location="44,16"/>
+      </sourceConnections>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="11,45" size="86,33" targetConnections="//@children.6/@children.4/@sourceConnections.0" id="KOSUZUskondolastminute220" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="140,43" size="91,33" id="KOSUZUskondolastminute221" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="KOSUZUskondolastminute263" connectionRouterKind="Manual" source="//@children.6/@children.4" target="//@children.6/@children.3" targetEnd="//@children.6/@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@children.4/@sourceConnections.0/@children.0">
+        <children xsi:type="editmodel:AssociationEndEditModel" location="45,16"/>
+        <children xsi:type="editmodel:AssociationEndEditModel" location="43,16"/>
+      </sourceConnections>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="9,92" size="123,33" id="KOSUZUskondolastminute222" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" location="385,267" size="164,183" id="KOSUZUskondolastminute235">
+    <children xsi:type="editmodel:ClassEditModel" location="11,42" size="80,33" id="KOSUZUskondolastminute236" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <sourceConnections xsi:type="editmodel:GeneralizationEditModel" id="KOSUZUskondolastminute240" connectionRouterKind="Manual" source="//@children.7/@children.0" target="//@children.1" targetEnd="//@children.7/@children.0/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@children.0/@sourceConnections.0/@children.0">
+        <children xsi:type="editmodel:AssociationEndEditModel" location="38,14"/>
+        <children xsi:type="editmodel:AssociationEndEditModel" location="100,14"/>
+      </sourceConnections>
+    </children>
+    <children xsi:type="editmodel:ClassEditModel" location="-11,97" size="120,33" id="KOSUZUskondolastminute237" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+  </children>
+  <children xsi:type="editmodel:PackageEditModel" location="174,329" size="201,122" id="KOSUZUskondolastminute241">
+    <children xsi:type="editmodel:ClassEditModel" location="12,49" size="165,33" id="KOSUZUskondolastminute242" runTimeClassModel="">
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+      <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    </children>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" location="34,95" size="141,33" targetConnections="//@children.5/@children.2/@sourceConnections.0 //@children.5/@children.1/@sourceConnections.0" id="KOSUZUskondolastminute249" runTimeClassModel="">
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="4,4" viewSorter="Name"/>
+  </children>
+</editmodel:ClassDiagramEditModel>

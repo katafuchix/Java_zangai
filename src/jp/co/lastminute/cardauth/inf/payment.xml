@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+
+<payment-property>
+<!--
+	データ形式：
+	<payment-one-type2>							決済処理サービス定義ブロック
+		<authservlet-info>						Payment-One決済サーバ接続情報定義ブロック
+			<authservlet-url>					Payment-One決済サーバが実行されているマシンのURL
+												：例）https://localhost:7002/AuthServlet
+			<authservlet-connect-retry>			Payment-One決済サーバとのセッション制御のリトライ回数
+												：このままで構いません
+			<authservlet-connect-timeout>		Payment-One決済サーバからのセッション情報受信待機時間（秒）
+												：このままで構いません
+			<authservlet-send-retry>			Payment-One決済サーバへの再送要求を送信する回数
+												：このままで構いません
+			<authservlet-send-timeout>			Payment-One決済サーバへ１回目の再送要求を送信するまでのレスポンス受信待機時間（秒）
+												：このままで構いません
+			<authservlet-wait-sec>				同一端末識別番号による要求があった場合に待つ最大秒数
+												：このままで構いません
+			<dummy-mode>						マーチャント・モジュールVer.2の動作モード（0: 通常モード / 1: ダミーモード）
+
+		<terminal-info>							端末識別番号情報定義ブロック
+			<terminal-class>					端末識別番号，伝票番号管理クラス
+												：通常は変更しないで下さい
+
+		<log-info>								ログ出力情報定義ブロック
+			<tranlog-name>						トランザクションログを出力するパス（ファイル名含む）
+												：ファイル名.YYYY-MM-DDというファイルが生成されます
+			<log-class>							ログ出力クラス
+												：通常は変更しないで下さい
+-->
+
+	<payment-one-type2>
+		<authservlet-info>
+			<authservlet-url>https://localhost:7002/AuthServlet</authservlet-url>
+			<authservlet-connect-retry>3</authservlet-connect-retry>
+			<authservlet-connect-timeout>30</authservlet-connect-timeout>
+			<authservlet-send-retry>3</authservlet-send-retry>
+			<authservlet-send-timeout>30</authservlet-send-timeout>
+			<authservlet-wait-sec>60</authservlet-wait-sec>
+			<dummy-mode>1</dummy-mode>
+		</authservlet-info>
+		
+		<terminal-info>
+			<terminal-class>com.ec_one.cBank.payment.util.PaymentNumberingMachineforFileIO</terminal-class>
+		</terminal-info>
+
+		<log-info>
+			<tranlog-name>/usr/local/jakarta-tomcat-4.0.3/webapps/lmj/WEB-INF/classes/jp/co/lastminute/card/logs/tran</tranlog-name>
+			<log-class>com.ec_one.cBank.payment.history.PaymentFileOutHistory</log-class>
+		</log-info>
+	</payment-one-type2>
+</payment-property>
